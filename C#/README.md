@@ -2,4 +2,3 @@
 ## Dependencies
 * Newtonsoft Json Parser (JSON.NET)
 * CookComputing XmlRpc library (XML-RPC.NET)
-* 
