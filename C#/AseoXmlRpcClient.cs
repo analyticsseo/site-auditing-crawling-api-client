@@ -23,7 +23,19 @@ namespace AseoAuditCrawling
 	
 		[XmlRpcMethod("site.getUniversalKeywordsRanking", StructParams=false)]
 		object getUniversalKeywordsRanking(string hash, string domain, string timestamp, string salt, 
-		                                   int siteId, int campaignId, int offset, int limit);	
+		                                   int siteId, int campaignId, int offset, int limit);
+		
+		[XmlRpcMethod("site.getCategories", StructParams=false)]
+		object getCategories(string hash, string domain, string timestamp, string salt, 
+		                     int siteId, int campaignId);	
+	
+		[XmlRpcMethod("site.getKeywordsGroups", StructParams=false)]
+		object getKeywordsGroups(string hash, string domain, string timestamp, string salt, 
+		                         int siteId, int campaignId);	
+
+		[XmlRpcMethod("site.getMarketVisibility", StructParams=false)]
+		object getMarketVisibility(string hash, string domain, string timestamp, string salt, 
+		                           int siteId, int campaignId, string date, int keywordGroupId, int categoryId);
 	}
 
 	class AseoXmlRpcClient
@@ -138,6 +150,52 @@ namespace AseoAuditCrawling
 
 			object apiResponse = site.getUniversalKeywordsRanking(hash, domain, timestamp, salt, siteId, 
 			                                                    campaignId, offset, limit);	
+			return JsonConvert.SerializeObject(apiResponse);
+		}
+
+		public string getCategories(int siteId, int campaignId)
+		{
+			string method = "site.getCategories";
+			string salt = this.generateSalt ();
+			string timestamp = this.generateTimestamp().ToString();
+			string hash = this.generateHash (this.domain, this.apiKey, method, timestamp, salt);
+
+			Site site = XmlRpcProxyGen.Create<Site>();
+			site.Url = this.apiUrl;
+			site.Credentials = new NetworkCredential(this.httpUser, this.httpPasswd);
+
+			object apiResponse = site.getCategories(hash, domain, timestamp, salt, siteId, campaignId);	
+			return JsonConvert.SerializeObject(apiResponse);
+		}
+
+		public string getKeywordsGroups(int siteId, int campaignId)
+		{
+			string method = "site.getKeywordsGroups";
+			string salt = this.generateSalt ();
+			string timestamp = this.generateTimestamp().ToString();
+			string hash = this.generateHash (this.domain, this.apiKey, method, timestamp, salt);
+
+			Site site = XmlRpcProxyGen.Create<Site>();
+			site.Url = this.apiUrl;
+			site.Credentials = new NetworkCredential(this.httpUser, this.httpPasswd);
+
+			object apiResponse = site.getKeywordsGroups(hash, domain, timestamp, salt, siteId, campaignId);	
+			return JsonConvert.SerializeObject(apiResponse);
+		}
+
+		public string getMarketVisibility(int siteId, int campaignId, string date, int keywordGroupId, int categoryId)
+		{
+			string method = "site.getMarketVisibility";
+			string salt = this.generateSalt ();
+			string timestamp = this.generateTimestamp().ToString();
+			string hash = this.generateHash (this.domain, this.apiKey, method, timestamp, salt);
+
+			Site site = XmlRpcProxyGen.Create<Site>();
+			site.Url = this.apiUrl;
+			site.Credentials = new NetworkCredential(this.httpUser, this.httpPasswd);
+
+			object apiResponse = site.getMarketVisibility(hash, domain, timestamp, salt, siteId, 
+			                                              campaignId, date, keywordGroupId, categoryId);	
 			return JsonConvert.SerializeObject(apiResponse);
 		}
 
