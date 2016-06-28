@@ -19,7 +19,7 @@ namespace AseoAuditCrawling
 	{
 		[XmlRpcMethod("site.getOrganicKeywordsRanking", StructParams=false)]
 		object getOrganicKeywordsRanking(string hash, string domain, string timestamp, string salt, int siteId, 
-		                                 int campaignId, string period, bool domain_alias, int offset, int limit);	
+		                                 int campaignId, string period, bool domain_alias, int offset, int limit, bool competitive);	
 	
 		[XmlRpcMethod("site.getUniversalKeywordsRanking", StructParams=false)]
 		object getUniversalKeywordsRanking(string hash, string domain, string timestamp, string salt, 
@@ -121,7 +121,7 @@ namespace AseoAuditCrawling
 		}
 
 		public string getOrganicKeywordsRanking(int siteId, int campaignId, string date, 
-		                                     bool domain_alias, int offset, int limit)
+		                                    	bool domain_alias, int offset, int limit, bool competitive)
 		{
 			string method = "site.getOrganicKeywordsRanking";
 			string salt = this.generateSalt ();
@@ -133,7 +133,7 @@ namespace AseoAuditCrawling
 			site.Credentials = new NetworkCredential(this.httpUser, this.httpPasswd);
 
 			object apiResponse = site.getOrganicKeywordsRanking(hash, domain, timestamp, salt, siteId, 
-			                                                    campaignId, date, domain_alias, offset, limit);	
+			                                                    campaignId, date, domain_alias, offset, limit, competitive);	
 			return JsonConvert.SerializeObject(apiResponse);
 		}
 
@@ -208,7 +208,7 @@ namespace AseoAuditCrawling
 			AseoXmlRpcClient client = new AseoXmlRpcClient(DOMAIN, API_KEY);
 			client.connect (API_URL);
 
-			string result = client.getOrganicKeywordsRanking (1, 2, "2016-06-07", false, 0, 10);
+			string result = client.getOrganicKeywordsRanking (1, 2, "2016-06-07", false, 0, 10, true);
 			Console.Write(result);
 		}
 	}
